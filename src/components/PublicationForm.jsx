@@ -5,10 +5,10 @@ import { createPublication } from '../reducers/publicationReducer'
 const PublicationForm = () => {
   const [newPublication, setNewPublication] = useState('')
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user) // Obtiene los usuarios desde Redux con useSelector
 
   const addPublication = (event) => {
-    event.preventDefault()
+    event.preventDefault() // Detiene el comportamiento predeterminado del navegador
     const publicationObject = {
       content: newPublication,
       imageUrl: 'https://stickerly.pstatic.net/sticker_pack/M6DUfwweCC1PPhJ9HOcpw/DAS3U4/19/-806376787.png',

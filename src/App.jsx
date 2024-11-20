@@ -6,18 +6,18 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import PublicationForm from './components/PublicationForm'
 
-import { publicationReducer } from './reducers/publicationReducer'
-import { userReducer } from './reducers/userReducer'
+import { initializePublications } from './reducers/publicationReducer'
+import { initializeUsers, setUserFromStorage } from './reducers/userReducer'
 
 const App = () => {
-  // Usa useDispatch para disparar dos acciones en useEffect al cargar la aplicación
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const errorMessage = useSelector((state) => state.notification)
 
   useEffect(() => {
-    dispatch(userReducer()) // Carga el usuario
-    dispatch(publicationReducer()) // Carga todas las publicaciones
+    dispatch(setUserFromStorage()) // Recuperamos el usuario logueado desde el almacenamiento
+    dispatch(initializeUsers()) // Cargamos todos los usuarios
+    dispatch(initializePublications()) // Cargamos todas las publicaciones
   }, [dispatch])
 
   return (
@@ -28,11 +28,11 @@ const App = () => {
         <LoginForm />
       ) : (
         <div>
-          <p>{user.name} logged in</p>
+          <p>{user.name} logged in</p> {/* ---------------- TENGO QUE CORREGIR AQUI ---------------- */}
           <PublicationForm />
         </div>
       )}
-      <PublicationList />
+      <PublicationList user={user}/>
     </div>
   )
 }
