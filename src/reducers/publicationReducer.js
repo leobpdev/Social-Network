@@ -30,10 +30,14 @@ export const createPublication = (publication) => async (dispatch) => {
   dispatch(addPublication(newPublication))
 }
 
-export const likePublication = (publication) => async (dispatch) => {
+export const likePublication = ({ publication, userId }) => async (dispatch) => {
+  const hasLiked = publication.likes.includes(userId)
+
   const updatedPublication = {
     ...publication,
-    likes: publication.likes + 1,
+    likes: hasLiked
+      ? publication.likes.filter((id) => id !== userId)
+      : [...publication.likes, userId]
   }
   const savedPublication = await publicationService.updatePublication(
     publication.id,
@@ -41,5 +45,6 @@ export const likePublication = (publication) => async (dispatch) => {
   )
   dispatch(updatePublication(savedPublication))
 }
+
 
 export default publicationSlice.reducer

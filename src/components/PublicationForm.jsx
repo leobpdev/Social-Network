@@ -12,8 +12,8 @@ const PublicationForm = () => {
     const publicationObject = {
       content: newPublication,
       imageUrl: 'https://stickerly.pstatic.net/sticker_pack/M6DUfwweCC1PPhJ9HOcpw/DAS3U4/19/-806376787.png',
-      likes: 0,
       user: user.id,
+      "likes":[]
     }
     dispatch(createPublication(publicationObject))
     setNewPublication('')
