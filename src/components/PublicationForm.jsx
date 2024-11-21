@@ -5,7 +5,7 @@ import { createPublication } from '../reducers/publicationReducer'
 const PublicationForm = () => {
   const [newPublication, setNewPublication] = useState('')
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user) // Obtiene los usuarios desde Redux con useSelector
+  const user = useSelector((state) => state.user.loggedUser) 
 
   const addPublication = (event) => {
     event.preventDefault() // Detiene el comportamiento predeterminado del navegador

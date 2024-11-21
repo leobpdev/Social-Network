@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { likePublication } from '../reducers/publicationReducer'
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 const PublicationList = () => {
   const publications = useSelector((state) => state.publications) // Obtener las publicaciones desde Redux
@@ -12,28 +12,41 @@ const PublicationList = () => {
   }
 
   return (
-    <div className="container col-md-6 mt-4">
+    <div className="container col-md-4 mt-4">
       <div className="row">
         {publications.map((publication) => {
-          const user = users.find((user) => user.id === publication.user) // Buscar el usuario que creó la publicación utilizando el ID de usuario
+          // Encuentra el usuario correspondiente para la publicación
+          const user = users.find((u) => u.id === publication.user)
 
           return (
             <div className="col-md-12 mb-4" key={publication.id}>
-              <p><strong>{user ? user.username : 'Usuario no encontrado'}</strong></p>
-              
+              <div className="d-flex align-items-center mb-2">
+                <img
+                  src={user.imageUrl || "default-image.jpg"}
+                  alt="Foto de perfil"
+                  className="rounded-circle me-2"
+                  style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+                />
+                <p className="mb-0">
+                  <strong>{user?.name || 'Usuario desconocido'}</strong>
+                </p>
+              </div>
               <div className="card">
                 {publication.imageUrl && (
-                  <img src={publication.imageUrl} className="card-img-top" alt="Nota" />
+                  <img
+                    src={publication.imageUrl}
+                    className="card-img-top"
+                    alt="Nota"
+                  />
                 )}
                 <div className="card-body">
                   <p className="card-text">{publication.content}</p>
                   <div className="d-flex justify-content-between align-items-center">
-                    <button 
-                      className="btn" 
-                      onClick={() => handleLike(publication)}
-                      style={{ color: publication.liked ? 'red' : 'gray' }}
+                    <button
+                      className="btn"
+                      style={{ color: 'gray' }}
                     >
-                      <i className={`bi bi-heart${publication.liked ? '-fill' : ''}`}></i>
+                      <i className="bi bi-heart"></i>
                     </button>
                     <span className="text-muted">
                       {publication.likes} {publication.likes === 1 ? 'like' : 'likes'}

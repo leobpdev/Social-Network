@@ -11,13 +11,14 @@ import { initializeUsers, setUserFromStorage } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user.loggedUser)
   const errorMessage = useSelector((state) => state.notification)
 
   useEffect(() => {
     dispatch(setUserFromStorage()) // Recuperamos el usuario logueado desde el almacenamiento
-    dispatch(initializeUsers()) // Cargamos todos los usuarios
-    dispatch(initializePublications()) // Cargamos todas las publicaciones
+    dispatch(initializeUsers())
+    dispatch(initializePublications())
+
   }, [dispatch])
 
   return (
@@ -28,11 +29,18 @@ const App = () => {
         <LoginForm />
       ) : (
         <div>
-          <p>{user.name} logged in</p> {/* ---------------- TENGO QUE CORREGIR AQUI ---------------- */}
+          <div className="d-flex align-items-center">
+            <img
+              src={user.imageUrl || "default-image.jpg"}
+              alt="Foto de perfil"
+              className="rounded-circle me-2"
+              style={{ width: '40px', height: '40px', objectFit: 'cover' }} />
+            <p className="mb-0">{user.name}</p>
+          </div>
           <PublicationForm />
         </div>
       )}
-      <PublicationList user={user}/>
+      <PublicationList />
     </div>
   )
 }
