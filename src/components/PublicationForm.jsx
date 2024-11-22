@@ -20,13 +20,20 @@ const PublicationForm = () => {
   }
 
   return (
-    <form onSubmit={addPublication}>
-      <input
-        value={newPublication}
-        onChange={(e) => setNewPublication(e.target.value)}
-      />
-      <button type="submit">save</button>
-    </form>
+    <div className="container col-md-4 mt-4">
+      <form onSubmit={addPublication}>
+        <div className="mb-3">
+          <label htmlFor="publicationInput" className="form-label">New Publication</label>
+          <input
+            id="publicationInput"
+            className="form-control"
+            value={newPublication}
+            onChange={(e) => setNewPublication(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">Save</button>
+      </form>
+    </div>
   )
 }
 

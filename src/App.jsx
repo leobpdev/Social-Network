@@ -1,94 +1,92 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import PublicationList from './components/PublicationList'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
 import PublicationForm from './components/PublicationForm'
+import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
 
 import { initializePublications } from './reducers/publicationReducer'
-import { initializeUsers, setUserFromStorage } from './reducers/userReducer'
+import { initializeUsers, setLoggedUser } from './reducers/userReducer'
 
 const App = () => {
-  const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.loggedUser)
+  // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
+  const loggedUser = useSelector((state) => state.user.loggedUser)
   const errorMessage = useSelector((state) => state.notification)
 
+  // useDispatch es un hook que dlink acceso al método dispatch del store. Este método se uslink parlink enviar acciones al store y actualizar el estado global.
+  const dispatch = useDispatch()
+
+  // useEffect es un hook  que te permite sincronizar un componente con un sistemlink externo
   useEffect(() => {
-    dispatch(setUserFromStorage()) // Recuperamos el usuario logueado desde el almacenamiento
-    dispatch(initializeUsers())
-    dispatch(initializePublications())
+    dispatch(setLoggedUser()) // Carglink el usuario logueado
+    dispatch(initializeUsers()) // Carglink todos los usuarios
+    dispatch(initializePublications()) // Carglink todas las publicaciones
 
   }, [dispatch])
 
   return (
-    <div>
-      <Notification message={errorMessage} />
-      {user === null ? (
-        <LoginForm />
-      ) : (
+    <Router>
+      <div>
+        <Notification message={errorMessage} />
+        {loggedUser === null ? (
+          <LoginForm />
+        ) : (
 
-        <div>
-          <div className="d-flex">
-            <div className="d-flex flex-column position-fixed vh-100 bg-dark text-white" style={{ width: "250px" }}>
-              <h1 className="fs-4 text-center py-3">Social Network</h1>
-              <ul className="nav flex-column">
-                <li className="nav-item">
-                  <a href="#" className="nav-link text-white">
-                    <i className="bi bi-house-door-fill me-2"></i> Inicio
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link text-white">
-                    <i className="bi bi-search me-2"></i> Buscar
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link text-white">
-                    <i className="bi bi-chat me-2"></i> Mensajes
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link text-white">
-                    <i className="bi bi-heart me-2"></i> Notificaciones
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link text-white">
-                    <i className="bi bi-plus-square me-2"></i> Crear
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link text-white">
-                    <i className="bi bi-person-circle me-2"></i> Perfil
-                  </a>
-                </li>
-              </ul>
-              <div className="mt-auto py-3 text-center">
-                <a href="#" className="nav-link text-white">
-                  <i className="bi bi-three-dots"></i> Más
-                </a>
-              </div>
-            </div>
-
-            <PublicationList />
-          </div>
-          {/*
           <div>
-            <div className="d-flex align-items-center">
-              <img
-                src={currentUser.imageUrl}
-                alt="Foto de perfil"
-                className="rounded-circle me-2"
-                style={{ width: '40px', height: '40px', objectFit: 'cover' }} />
-              <p className="mb-0">{user.name}</p>
+            <div className="d-flex">
+              <div className="d-flex flex-column position-fixed vh-100 bg-dark text-white" style={{ width: "250px" }}>
+                <h1 className="fs-4 text-center py-3">Social Network</h1>
+                <ul className="nav flex-column">
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link text-white">
+                      <i className="bi bi-house-door-fill me-2"></i> Home
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link text-white">
+                      <i className="bi bi-search me-2"></i> Search
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link text-white">
+                      <i className="bi bi-chat me-2"></i> Messages
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link text-white">
+                      <i className="bi bi-heart me-2"></i> Notifications
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/create" className="nav-link text-white">
+                      <i className="bi bi-plus-square me-2"></i> Create
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link text-white">
+                      <i className="bi bi-person-circle me-2"></i> Profile
+                    </Link>
+                  </li>
+                </ul>
+                <div className="mt-auto py-3 text-center">
+                  <Link to="/" className="nav-link text-white">
+                    <i className="bi bi-three-dots"></i> More
+                  </Link>
+                </div>
+              </div>
+
             </div>
-            <PublicationForm />
+            <Routes>
+              <Route path="/" element={<PublicationList />} />
+              <Route path="/create" element={<PublicationForm />} />
+            </Routes>
           </div>
-          */}
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </Router>
   )
 }
 

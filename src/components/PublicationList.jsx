@@ -3,13 +3,13 @@ import { likePublication } from '../reducers/publicationReducer'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 const PublicationList = () => {
-  const publications = useSelector((state) => state.publications) // Obtener las publicaciones desde Redux
-  const users = useSelector((state) => state.user.users) // Obtener a los usuarios desde Redux
-  const currentUser = useSelector((state) => state.user.loggedUser)
+  const publications = useSelector((state) => state.publications) 
+  const users = useSelector((state) => state.user.users) 
+  const loggedUser = useSelector((state) => state.user.loggedUser)
   const dispatch = useDispatch()
 
   const handleLike = (publication) => {
-    dispatch(likePublication({ publication, userId: currentUser.id }))
+    dispatch(likePublication({ publication, userId: loggedUser.id }))
   }
 
   return (
@@ -18,7 +18,7 @@ const PublicationList = () => {
         {publications.map((publication) => {
           // Encuentra el usuario correspondiente para la publicación
           const user = users.find((u) => u.id === publication.user)
-          const hasLiked = publication.likes.includes(currentUser.id)
+          const hasLiked = publication.likes.includes(loggedUser.id)
 
           return (
             <div className="col-md-12 mb-4" key={publication.id}>
