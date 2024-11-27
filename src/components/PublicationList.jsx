@@ -2,10 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { likePublication } from '../reducers/publicationReducer'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-const PublicationList = () => {
-  const publications = useSelector((state) => state.publications) 
-  const users = useSelector((state) => state.user.users) 
-  const loggedUser = useSelector((state) => state.user.loggedUser)
+const PublicationList = ({ publications, loggedUser }) => {
   const dispatch = useDispatch()
 
   const handleLike = (publication) => {
@@ -16,15 +13,16 @@ const PublicationList = () => {
     <div className="container col-md-4 mt-4">
       <div className="row">
         {publications.map((publication) => {
-          // Encuentra el usuario correspondiente para la publicación
-          const user = users.find((u) => u.id === publication.user)
+          const { user } = publication // La publicación ya debe tener la información del usuario
+
+          // Verifica si el usuario está presente y si el usuario tiene "imageUrl" o "name"
           const hasLiked = publication.likes.includes(loggedUser.id)
 
           return (
             <div className="col-md-12 mb-4" key={publication.id}>
               <div className="d-flex align-items-center mb-2">
                 <img
-                  src={user.imageUrl || "default-image.jpg"}
+                  src={user?.imageUrl || ""}
                   alt="Foto de perfil"
                   className="rounded-circle me-2"
                   style={{ width: '40px', height: '40px', objectFit: 'cover' }}

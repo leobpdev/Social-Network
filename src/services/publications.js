@@ -1,6 +1,6 @@
 import axios from 'axios'
-//const baseUrl = '/api/publications'
-const baseUrl = 'http://localhost:3001/publications' // IMPLEMENTACION TEMPORAL PARA HACER LAS PRUEBAS
+const baseUrl = '/api/publications'
+//const baseUrl = 'http://localhost:3001/publications' // IMPLEMENTACION TEMPORAL PARA HACER LAS PRUEBAS
 
 let token = null
 

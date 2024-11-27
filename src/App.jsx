@@ -14,6 +14,8 @@ import { initializeUsers, setLoggedUser } from './reducers/userReducer'
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
   const loggedUser = useSelector((state) => state.user.loggedUser)
+  const users = useSelector((state) => state.user.users) 
+  const publications = useSelector((state) => state.publications) 
   const errorMessage = useSelector((state) => state.notification)
 
   // useDispatch es un hook que dlink acceso al método dispatch del store. Este método se uslink parlink enviar acciones al store y actualizar el estado global.
@@ -21,10 +23,12 @@ const App = () => {
 
   // useEffect es un hook  que te permite sincronizar un componente con un sistemlink externo
   useEffect(() => {
-    dispatch(setLoggedUser()) // Carglink el usuario logueado
-    dispatch(initializeUsers()) // Carglink todos los usuarios
-    dispatch(initializePublications()) // Carglink todas las publicaciones
-
+    const initializeData = async () => {
+      await dispatch(setLoggedUser())
+      await dispatch(initializeUsers())
+      dispatch(initializePublications()) // Esto se ejecutará después de cargar usuarios.
+    }
+    initializeData()
   }, [dispatch])
 
   return (
@@ -80,7 +84,7 @@ const App = () => {
 
             </div>
             <Routes>
-              <Route path="/" element={<PublicationList />} />
+              <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser}/>} />
               <Route path="/create" element={<PublicationForm />} />
             </Routes>
           </div>

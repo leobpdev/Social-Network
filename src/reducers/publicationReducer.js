@@ -21,10 +21,13 @@ const publicationSlice = createSlice({
 
 export const { setPublications, addPublication, updatePublication } = publicationSlice.actions
 
-// Además de los reducers, el slice define thunks (acciones asíncronas) que retornan una función en vez de un objeto de acción típico
 export const initializePublications = () => async (dispatch) => {
-  const publications = await publicationService.getAllPublications()
-  dispatch(setPublications(publications))
+  try {
+    const publications = await publicationService.getAllPublications()
+    dispatch(setPublications(publications))
+  } catch (error) {
+    console.error("Error al inicializar publicaciones:", error)
+  }
 }
 
 export const createPublication = (publication) => async (dispatch) => {
@@ -47,6 +50,5 @@ export const likePublication = ({ publication, userId }) => async (dispatch) => 
   )
   dispatch(updatePublication(savedPublication))
 }
-
 
 export default publicationSlice.reducer

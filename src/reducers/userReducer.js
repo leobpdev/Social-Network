@@ -28,8 +28,12 @@ const userSlice = createSlice({
 export const { setUser, clearUser, setUsers } = userSlice.actions
 
 export const initializeUsers = () => async (dispatch) => {
-  const users = await userService.getAllUsers()
-  dispatch(setUsers(users))
+  try {
+    const users = await userService.getAllUsers();
+    dispatch(setUsers(users));
+  } catch (error) {
+    console.error("Error al cargar los usuarios:", error);
+  }
 }
 
 export const setLoggedUser = () => (dispatch) => {
