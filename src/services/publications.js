@@ -8,9 +8,12 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
-const getAllPublications = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAllPublications = async () => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.get(baseUrl, config)
+  return response.data
 }
 
 const createPublication = async newObject => {
@@ -25,8 +28,12 @@ const updatePublication = async (id, newObject) => {
   const config = {
     headers: { Authorization: token },
   }
-  const response = await axios.put(`${baseUrl}/${id}`, newObject, config) // Nota el objeto vacío para datos
-  return response.data
+  try {
+    const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
+    return response.data
+  } catch (error) {
+    console.error('Error al actualizar la publicación:', error);
+  }
 }
 
 export default { getAllPublications, createPublication, updatePublication, setToken }

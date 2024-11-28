@@ -35,12 +35,12 @@ export const createPublication = (publication) => async (dispatch) => {
   dispatch(addPublication(newPublication))
 }
 
-export const likePublication = ({ publication, userId }) => async (dispatch) => {
+export const likePublication = ({ publication }) => async (dispatch) => {
   try {
-    const response = await publicationService.updatePublication(publication.id)
-    dispatch(updatePublication(response))
+    const updatedPublication = await publicationService.updatePublication(publication.id)
+    dispatch(updatePublication(updatedPublication))
   } catch (error) {
-    console.error('Error al dar like:', error)
+    console.error('Error al dar like a la publicación:', error)
   }
 }
 

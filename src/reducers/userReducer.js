@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import userService from '../services/users' 
+import publicationService from '../services/publications'
 import loginService from '../services/login'
 
 const userSlice = createSlice({
@@ -43,6 +44,7 @@ export const setLoggedUser = () => (dispatch) => {
 export const login = (credentials) => async (dispatch) => {
   const user = await loginService.login(credentials)
   window.localStorage.setItem('loggedUser', JSON.stringify(user))
+  publicationService.setToken(user.token)
   dispatch(setUser(user))
 }
 

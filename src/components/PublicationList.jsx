@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { likePublication } from '../reducers/publicationReducer'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
@@ -6,17 +6,14 @@ const PublicationList = ({ publications, loggedUser }) => {
   const dispatch = useDispatch()
 
   const handleLike = (publication) => {
-    dispatch(likePublication({ publication, userId: loggedUser.id }))
+    dispatch(likePublication({ publication }))
   }
 
   return (
     <div className="container col-md-4 mt-4">
       <div className="row">
         {publications.map((publication) => {
-          const { user } = publication // La publicación ya debe tener la información del usuario
-
-          // Verifica si el usuario está presente y si el usuario tiene "imageUrl" o "name"
-          const hasLiked = publication.likes.includes(loggedUser.id)
+          const { user, hasLiked } = publication
 
           return (
             <div className="col-md-12 mb-4" key={publication.id}>

@@ -11,10 +11,12 @@ import Notification from './components/Notification'
 import { initializePublications } from './reducers/publicationReducer'
 import { initializeUsers, setLoggedUser } from './reducers/userReducer'
 
+import publicationService from './services/publications'// QUIERO MOVERLO A OTRO SITIO
+
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
   const loggedUser = useSelector((state) => state.user.loggedUser)
-  const publications = useSelector((state) => state.publications) 
+  const publications = useSelector((state) => state.publications)
   const errorMessage = useSelector((state) => state.notification)
 
   // useDispatch es un hook que dlink acceso al método dispatch del store. Este método se uslink parlink enviar acciones al store y actualizar el estado global.
@@ -22,6 +24,14 @@ const App = () => {
 
   // useEffect es un hook  que te permite sincronizar un componente con un sistemlink externo
   useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      if (user.token) {
+        publicationService.setToken(user.token) 
+      }
+    }
+
     const initializeData = async () => {
       await dispatch(setLoggedUser())
       await dispatch(initializeUsers())
@@ -83,8 +93,8 @@ const App = () => {
 
             </div>
             <Routes>
-              <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser}/>} />
-              <Route path="/create" element={<PublicationForm loggedUser={loggedUser}/>} />
+              <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
+              <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
             </Routes>
           </div>
         )}
