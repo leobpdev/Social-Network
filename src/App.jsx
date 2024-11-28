@@ -14,7 +14,6 @@ import { initializeUsers, setLoggedUser } from './reducers/userReducer'
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
   const loggedUser = useSelector((state) => state.user.loggedUser)
-  const users = useSelector((state) => state.user.users) 
   const publications = useSelector((state) => state.publications) 
   const errorMessage = useSelector((state) => state.notification)
 
@@ -85,7 +84,7 @@ const App = () => {
             </div>
             <Routes>
               <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser}/>} />
-              <Route path="/create" element={<PublicationForm />} />
+              <Route path="/create" element={<PublicationForm loggedUser={loggedUser}/>} />
             </Routes>
           </div>
         )}

@@ -36,19 +36,13 @@ export const createPublication = (publication) => async (dispatch) => {
 }
 
 export const likePublication = ({ publication, userId }) => async (dispatch) => {
-  const hasLiked = publication.likes.includes(userId)
-
-  const updatedPublication = {
-    ...publication,
-    likes: hasLiked
-      ? publication.likes.filter((id) => id !== userId) // Si ya dio like, lo elimina (filter)
-      : [...publication.likes, userId] // Si no, lo agrega (spread operator)
+  try {
+    const response = await publicationService.updatePublication(publication.id)
+    dispatch(updatePublication(response))
+  } catch (error) {
+    console.error('Error al dar like:', error)
   }
-  const savedPublication = await publicationService.updatePublication(
-    publication.id,
-    updatedPublication
-  )
-  dispatch(updatePublication(savedPublication))
 }
+
 
 export default publicationSlice.reducer

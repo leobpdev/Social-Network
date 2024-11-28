@@ -17,14 +17,16 @@ const createPublication = async newObject => {
   const config = {
     headers: { Authorization: token },
   }
-
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
 
-const updatePublication = (id, newObject) => {
-  const request = axios.put(`${ baseUrl }/${id}`, newObject)
-  return request.then(response => response.data)
+const updatePublication = async (id, newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config) // Nota el objeto vacío para datos
+  return response.data
 }
 
 export default { getAllPublications, createPublication, updatePublication, setToken }
