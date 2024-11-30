@@ -28,7 +28,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       if (user.token) {
-        publicationService.setToken(user.token) 
+        publicationService.setToken(user.token)
       }
     }
 
@@ -39,6 +39,20 @@ const App = () => {
     }
     initializeData()
   }, [dispatch])
+
+/*const fs = require('fs');
+
+// Ruta de la imagen
+const filePath = './imagen.jpg';
+
+// Leer la imagen y convertirla a base64
+fs.readFile(filePath, (err, data) => {
+  if (err) throw err;
+  const base64Image = data.toString('base64');
+  console.log('Imagen en Base64:', base64Image);
+
+  // Puedes guardar esta cadena en tu base de datos
+});*/
 
   return (
     <Router>

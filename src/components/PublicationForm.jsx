@@ -1,28 +1,49 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { createPublication } from '../reducers/publicationReducer'
 
-const PublicationForm = (user) => {
+const PublicationForm = ({ loggedUser }) => {
+  console.log('loggedUser prop:', loggedUser)
   const [newPublication, setNewPublication] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null) // Para almacenar el archivo seleccionado
   const dispatch = useDispatch()
 
-  const addPublication = (event) => {
-    event.preventDefault() // Detiene el comportamiento predeterminado del navegador
-    const publicationObject = {
-      content: newPublication,
-      imageUrl: 'https://stickerly.pstatic.net/sticker_pack/M6DUfwweCC1PPhJ9HOcpw/DAS3U4/19/-806376787.png',
-      user: user.id,
-      "likes":[]
+  const handleImageChange = (event) => {
+    const file = event.target.files[0]
+    if (file) {
+      setSelectedImage(file) // Guardar el archivo seleccionado
+      console.log('Archivo seleccionado:', file)
     }
-    dispatch(createPublication(publicationObject))
+  }
+
+  const addPublication = async (event) => {
+    event.preventDefault()
+
+    const formData = new FormData()
+    formData.append('content', newPublication)
+    if (selectedImage) {
+      formData.append('image', selectedImage) // 'image' debe coincidir con el nombre usado en multer
+    }
+
+    dispatch(createPublication(formData, loggedUser.token))
+
     setNewPublication('')
+    setSelectedImage(null) 
   }
 
   return (
     <div className="container col-md-4 mt-4">
       <form onSubmit={addPublication}>
         <div className="mb-3">
-          <label htmlFor="publicationInput" className="form-label">New Publication</label>
+        <label htmlFor="publicationInput" className="form-label">New Publication</label>
+          <input
+            id="imageInput"
+            type="file"
+            className="form-control"
+            accept="image/*"  // Solo permite archivos de imagen
+            onChange={handleImageChange}  // Llama a la función cuando el usuario selecciona un archivo
+          />
+
           <input
             id="publicationInput"
             className="form-control"
