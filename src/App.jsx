@@ -101,7 +101,7 @@ const App = () => {
                     </ul>
                     <div className="mt-auto py-3 text-center">
                       <Link to="/" className="nav-link text-white">
-                        <i className="bi bi-three-dots"></i> More
+                        <i className="bi bi-box-arrow-left"></i> Log out
                       </Link>
                     </div>
                   </div>
