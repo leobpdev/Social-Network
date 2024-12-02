@@ -12,7 +12,7 @@ const LoginForm = () => {
     try {
       await dispatch(login({ username, password }))
     } catch (error) {
-      console.error('Error al iniciar sesión:', error)
+      console.error('Error logging in:', error)
     }
   }
 

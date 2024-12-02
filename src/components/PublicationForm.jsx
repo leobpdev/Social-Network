@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { createPublication } from '../reducers/publicationReducer'
 
 const PublicationForm = ({ loggedUser }) => {
-  console.log('loggedUser prop:', loggedUser)
   const [newPublication, setNewPublication] = useState('')
   const [selectedImage, setSelectedImage] = useState(null) // Para almacenar el archivo seleccionado
   const dispatch = useDispatch()
@@ -12,7 +11,6 @@ const PublicationForm = ({ loggedUser }) => {
     const file = event.target.files[0]
     if (file) {
       setSelectedImage(file) // Guardar el archivo seleccionado
-      console.log('Archivo seleccionado:', file)
     }
   }
 

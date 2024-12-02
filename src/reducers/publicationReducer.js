@@ -21,18 +21,23 @@ const publicationSlice = createSlice({
 
 export const { setPublications, addPublication, updatePublication } = publicationSlice.actions
 
+// funciones son "thunks", que representan acciones asincrónicas o acciones que requieren lógica adicional antes de actualizar el estado
 export const initializePublications = () => async (dispatch) => {
   try {
     const publications = await publicationService.getAllPublications()
     dispatch(setPublications(publications))
   } catch (error) {
-    console.error("Error al inicializar publicaciones:", error)
+    console.error("Error initializing posts:", error)
   }
 }
 
 export const createPublication = (publication) => async (dispatch) => {
-  const newPublication = await publicationService.createPublication(publication)
-  dispatch(addPublication(newPublication))
+  try {
+    const newPublication = await publicationService.createPublication(publication)
+    dispatch(addPublication(newPublication))
+  } catch (error) {
+    console.error('Error liking the post:', error)
+  }
 }
 
 export const likePublication = ({ publication }) => async (dispatch) => {
@@ -40,7 +45,7 @@ export const likePublication = ({ publication }) => async (dispatch) => {
     const updatedPublication = await publicationService.updatePublication(publication.id)
     dispatch(updatePublication(updatedPublication))
   } catch (error) {
-    console.error('Error al dar like a la publicación:', error)
+    console.error('Error creating post:', error)
   }
 }
 

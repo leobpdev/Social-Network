@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import userService from '../services/users' 
+import userService from '../services/users'
 import publicationService from '../services/publications'
 import loginService from '../services/login'
 
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+  // Define las funciones (reducers) que actualizan el estado según las acciones que se disparen
     loggedUser: null,
     users: [],
   },
@@ -17,19 +18,20 @@ const userSlice = createSlice({
       state.loggedUser = null
     },
     setUsers(state, action) {
-      state.users = action.payload 
+      state.users = action.payload
     },
   },
 })
 
 export const { setUser, clearUser, setUsers } = userSlice.actions
 
+// funciones son "thunks", que representan acciones asincrónicas o acciones que requieren lógica adicional antes de actualizar el estado
 export const initializeUsers = () => async (dispatch) => {
   try {
     const users = await userService.getAllUsers();
     dispatch(setUsers(users));
   } catch (error) {
-    console.error("Error al cargar los usuarios:", error);
+    console.error("Error loading users:", error);
   }
 }
 
