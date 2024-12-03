@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 import PublicationList from './components/PublicationList'
 import PublicationForm from './components/PublicationForm'
@@ -9,7 +8,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 
 import { initializePublications } from './reducers/publicationReducer'
-import { initializeUsers, setLoggedUser } from './reducers/userReducer'
+import { initializeUsers, setLoggedUser, logout } from './reducers/userReducer'
 
 import publicationService from './services/publications'
 
@@ -30,7 +29,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       if (user.token) {
-        dispatch(setLoggedUser(user)) 
+        dispatch(setLoggedUser(user))
         publicationService.setToken(user.token)
       }
     }
@@ -50,17 +49,23 @@ const App = () => {
     }
   }, [loggedUser, dispatch])
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedUser')
+    dispatch(logout())
+    publicationService.setToken(null)
+  }
+
   return (
-    <Router>
+    <BrowserRouter>
       <div>
         <Notification message={errorMessage} />
         {loggedUser === null ? (
           <LoginForm />
         ) : (
-          
+
           <div>
             {loading ? (
-              <div>Loading...</div> 
+              <div>Loading...</div>
             ) : (
 
               <div>
@@ -70,7 +75,7 @@ const App = () => {
                     <ul className="nav flex-column">
                       <li className="nav-item">
                         <Link to="/" className="nav-link text-white">
-                          <i className="bi bi-house-door-fill me-2"></i> Home
+                          <i className="bi bi-house-door me-2"></i> Home
                         </Link>
                       </li>
                       <li className="nav-item">
@@ -100,9 +105,9 @@ const App = () => {
                       </li>
                     </ul>
                     <div className="mt-auto py-3 text-center">
-                      <Link to="/" className="nav-link text-white">
+                      <button onClick={handleLogout} className="btn text-white">
                         <i className="bi bi-box-arrow-left"></i> Log out
-                      </Link>
+                      </button>
                     </div>
                   </div>
 
@@ -116,7 +121,7 @@ const App = () => {
           </div>
         )}
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 
