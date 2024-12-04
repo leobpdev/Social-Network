@@ -6,6 +6,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
   const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
@@ -14,6 +15,7 @@ const LoginForm = () => {
       await dispatch(login({ username, password }))
     } catch (error) {
       console.error('Error logging in:', error)
+      setErrorMessage('The username or password is incorrect. Please try again.')
     }
   }
 
@@ -52,6 +54,11 @@ const LoginForm = () => {
         <button type="submit" className="btn btn-primary w-100 py-2">
           Sign in
         </button>
+        {errorMessage && (
+          <div className="error mt-3">
+            {errorMessage}
+          </div>
+        )}
       </form>
     </div>
   )

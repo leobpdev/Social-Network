@@ -5,6 +5,7 @@ import { createPublication } from '../reducers/publicationReducer'
 const PublicationForm = ({ loggedUser }) => {
   const [newPublication, setNewPublication] = useState('')
   const [selectedImage, setSelectedImage] = useState(null) // Para almacenar el archivo seleccionado
+  const [errorMessage, setErrorMessage] = useState(null)
   const dispatch = useDispatch()
 
   const handleImageChange = (event) => {
@@ -17,14 +18,17 @@ const PublicationForm = ({ loggedUser }) => {
   const addPublication = async (event) => {
     event.preventDefault()
 
+    if (!newPublication.trim() || !selectedImage) {
+      setErrorMessage('Please complete both fields before publishing.');
+      return
+    }
+
     const formData = new FormData()
     formData.append('content', newPublication)
     if (selectedImage) {
       formData.append('image', selectedImage) // 'image' debe coincidir con el nombre usado en multer
     }
-
     dispatch(createPublication(formData, loggedUser.token))
-
     setNewPublication('')
     setSelectedImage(null)
   }
@@ -51,6 +55,11 @@ const PublicationForm = ({ loggedUser }) => {
           />
         </div>
         <button type="submit" className="btn btn-primary">Save</button>
+        {errorMessage && (
+          <div className="error mt-3">
+            {errorMessage}
+          </div>
+        )}
       </form>
     </div>
   )

@@ -5,7 +5,6 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import PublicationList from './components/PublicationList'
 import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
-import Notification from './components/Notification'
 
 import { initializePublications } from './reducers/publicationReducer'
 import { initializeUsers, setLoggedUser, logout } from './reducers/userReducer'
@@ -59,7 +58,6 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
       {loggedUser === null ? (
         <LoginForm />
       ) : (
