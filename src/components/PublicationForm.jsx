@@ -26,14 +26,14 @@ const PublicationForm = ({ loggedUser }) => {
     dispatch(createPublication(formData, loggedUser.token))
 
     setNewPublication('')
-    setSelectedImage(null) 
+    setSelectedImage(null)
   }
 
   return (
     <div className="container col-md-4 mt-4">
       <form onSubmit={addPublication}>
-        <div className="mb-3">
-        <label htmlFor="publicationInput" className="form-label">New Publication</label>
+        <h3 className="mb-3 fw-normal">New Publication</h3>
+        <div className="mb-1">
           <input
             id="imageInput"
             type="file"
@@ -41,7 +41,8 @@ const PublicationForm = ({ loggedUser }) => {
             accept="image/*"  // Solo permite archivos de imagen
             onChange={handleImageChange}  // Llama a la función cuando el usuario selecciona un archivo
           />
-
+        </div>
+        <div className="mb-3">
           <input
             id="publicationInput"
             className="form-control"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
 import PublicationList from './components/PublicationList'
 import PublicationForm from './components/PublicationForm'
@@ -55,73 +55,75 @@ const App = () => {
     publicationService.setToken(null)
   }
 
+  const location = useLocation()
+
   return (
-    <BrowserRouter>
-      <div>
-        <Notification message={errorMessage} />
-        {loggedUser === null ? (
-          <LoginForm />
-        ) : (
-
-          <div>
-            {loading ? (
-              <div>Loading...</div>
-            ) : (
-
-              <div>
-                <div className="d-flex">
-                  <div className="d-flex flex-column position-fixed vh-100 bg-dark text-white" style={{ width: "250px" }}>
-                    <h1 className="fs-4 text-center py-3">Social Network</h1>
-                    <ul className="nav flex-column">
-                      <li className="nav-item">
-                        <Link to="/" className="nav-link text-white">
-                          <i className="bi bi-house-door me-2"></i> Home
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/" className="nav-link text-white">
-                          <i className="bi bi-search me-2"></i> Search
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/" className="nav-link text-white">
-                          <i className="bi bi-chat me-2"></i> Messages
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/" className="nav-link text-white">
-                          <i className="bi bi-heart me-2"></i> Notifications
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/create" className="nav-link text-white">
-                          <i className="bi bi-plus-square me-2"></i> Create
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/" className="nav-link text-white">
-                          <i className="bi bi-person-circle me-2"></i> Profile
-                        </Link>
-                      </li>
-                    </ul>
-                    <div className="mt-auto py-3 text-center">
-                      <button onClick={handleLogout} className="btn text-white">
-                        <i className="bi bi-box-arrow-left"></i> Log out
-                      </button>
-                    </div>
+    <div>
+      <Notification message={errorMessage} />
+      {loggedUser === null ? (
+        <LoginForm />
+      ) : (
+        <>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              <div className="d-flex">
+                <div className="d-flex flex-column position-fixed vh-100 p-3 bg-body-tertiary" style={{ width: '250px' }}>
+                  <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    <span className="fs-4">Social Network</span>
+                  </a>
+                  <hr />
+                  <ul className="nav nav-pills flex-column mb-auto">
+                    <li className="nav-item">
+                      <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+                        <i className="bi bi-house-door me-2"></i> Home
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/search" className={`nav-link ${location.pathname.startsWith('/search') ? 'active' : ''}`}>
+                        <i className="bi bi-search me-2"></i> Search
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/messages" className={`nav-link ${location.pathname.startsWith('/messages') ? 'active' : ''}`}>
+                        <i className="bi bi-chat me-2"></i> Messages
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/notifications" className={`nav-link ${location.pathname.startsWith('/notifications') ? 'active' : ''}`}>
+                        <i className="bi bi-heart me-2"></i> Notifications
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/create" className={`nav-link ${location.pathname.startsWith('/create') ? 'active' : ''}`}>
+                        <i className="bi bi-plus-square me-2"></i> Create
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/profile" className={`nav-link ${location.pathname.startsWith('/profile') ? 'active' : ''}`}>
+                        <i className="bi bi-person-circle me-2"></i> Profile
+                      </Link>
+                    </li>
+                  </ul>
+                  <hr />
+                  <div className="text-center">
+                    <button onClick={handleLogout} className="btn">
+                      <i className="bi bi-box-arrow-left"></i> Sign out
+                    </button>
                   </div>
-
                 </div>
-                <Routes>
-                  <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
-                  <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
-                </Routes>
               </div>
-            )}
-          </div>
-        )}
-      </div>
-    </BrowserRouter>
+
+              <Routes>
+                <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
+                <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
+              </Routes>
+            </>
+          )}
+        </>
+      )}
+    </div>
   )
 }
 
