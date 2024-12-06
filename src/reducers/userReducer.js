@@ -9,21 +9,25 @@ const userSlice = createSlice({
   // Define las funciones (reducers) que actualizan el estado según las acciones que se disparen
     loggedUser: null,
     users: [],
+    profileUser: null,
   },
   reducers: {
-    setUser(state, action) {
+    setloggedUser(state, action) {
       state.loggedUser = action.payload
     },
-    clearUser(state) {
+    clearloggedUser(state) {
       state.loggedUser = null
     },
     setUsers(state, action) {
       state.users = action.payload
     },
+    setProfileUser(state, action) {
+      state.profileUser = action.payload
+    },
   },
 })
 
-export const { setUser, clearUser, setUsers } = userSlice.actions
+export const { setloggedUser, clearloggedUser, setUsers, setProfileUser } = userSlice.actions
 
 // funciones son "thunks", que representan acciones asincrónicas o acciones que requieren lógica adicional antes de actualizar el estado
 export const initializeUsers = () => async (dispatch) => {
@@ -35,11 +39,20 @@ export const initializeUsers = () => async (dispatch) => {
   }
 }
 
-export const setLoggedUser = () => (dispatch) => {
+export const initializeLoggerdUser = () => (dispatch) => {
   const loggedUser = window.localStorage.getItem('loggedUser')
   if (loggedUser) {
     const user = JSON.parse(loggedUser)
-    dispatch(setUser(user))
+    dispatch(setloggedUser(user))
+  }
+}
+
+export const getProfileUser = (userId) => async (dispatch) => {
+  try {
+    const user = await userService.getUserById(userId)
+    dispatch(setProfileUser(user))
+  } catch (error) {
+    console.error('Error fetching profile:', error)
   }
 }
 
@@ -47,12 +60,12 @@ export const login = (credentials) => async (dispatch) => {
   const user = await loginService.login(credentials)
   window.localStorage.setItem('loggedUser', JSON.stringify(user))
   publicationService.setToken(user.token)
-  dispatch(setUser(user))
+  dispatch(setloggedUser(user))
 }
 
 export const logout = () => (dispatch) => {
   window.localStorage.removeItem('loggedUser')
-  dispatch(clearUser())
+  dispatch(clearloggedUser())
 }
 
 export default userSlice.reducer

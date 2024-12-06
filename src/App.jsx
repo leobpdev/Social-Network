@@ -5,17 +5,19 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import PublicationList from './components/PublicationList'
 import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
+import Profile from './components/Profile'
 
 import { initializePublications } from './reducers/publicationReducer'
-import { initializeUsers, setLoggedUser, logout } from './reducers/userReducer'
+import { initializeUsers, initializeLoggerdUser, logout } from './reducers/userReducer'
 
 import publicationService from './services/publications'
+import userService from './services/users'
 
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
   const loggedUser = useSelector((state) => state.user.loggedUser)
   const publications = useSelector((state) => state.publications)
-  const errorMessage = useSelector((state) => state.notification)
+  const profileUser = useSelector((state) => state.user.profileUser)
 
   // useDispatch es un hook que proporciona acceso al método `dispatch` del store. Este método se utiliza para enviar acciones al store y actualizar el estado global.
   const dispatch = useDispatch()
@@ -28,8 +30,9 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       if (user.token) {
-        dispatch(setLoggedUser(user))
+        dispatch(initializeLoggerdUser(user))
         publicationService.setToken(user.token)
+        userService.setToken(user.token)
       }
     }
     setLoading(false) // Terminamos la carga inicial
@@ -66,8 +69,8 @@ const App = () => {
             <div>Loading...</div>
           ) : (
             <>
-              <div className="d-flex">
-                <div className="d-flex flex-column position-fixed vh-100 p-3 bg-body-tertiary" style={{ width: '250px' }}>
+              <div className="d-flex col-12">
+                <div className="d-flex flex-column col-2 sticky-top vh-100 p-3 bg-body-tertiary">
                   <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                     <span className="fs-4">Social Network</span>
                   </a>
@@ -111,12 +114,14 @@ const App = () => {
                     </button>
                   </div>
                 </div>
-              </div>
 
-              <Routes>
-                <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
-                <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
-              </Routes>
+                <Routes>
+                  <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
+                  <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
+                  <Route path="/profile" element={<Profile profileUser={loggedUser} />} />
+                </Routes>
+
+              </div>
             </>
           )}
         </>

@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux'
 import { likePublication } from '../reducers/publicationReducer'
-import 'bootstrap-icons/font/bootstrap-icons.css'
 
 const PublicationList = ({ publications }) => {
   const dispatch = useDispatch()
