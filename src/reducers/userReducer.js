@@ -21,21 +21,18 @@ const userSlice = createSlice({
     setUsers(state, action) {
       state.users = action.payload
     },
-    setProfileUser(state, action) {
-      state.profileUser = action.payload
-    },
   },
 })
 
-export const { setloggedUser, clearloggedUser, setUsers, setProfileUser } = userSlice.actions
+export const { setloggedUser, clearloggedUser, setUsers } = userSlice.actions
 
 // funciones son "thunks", que representan acciones asincrónicas o acciones que requieren lógica adicional antes de actualizar el estado
-export const initializeUsers = () => async (dispatch) => {
+export const initializeUsers = (profileToken) => async (dispatch) => {
   try {
-    const users = await userService.getAllUsers();
-    dispatch(setUsers(users));
+    const users = await userService.getAllUsers(profileToken)
+    dispatch(setUsers(users))
   } catch (error) {
-    console.error("Error loading users:", error);
+    console.error("Error loading users:", error)
   }
 }
 
@@ -44,15 +41,6 @@ export const initializeLoggerdUser = () => (dispatch) => {
   if (loggedUser) {
     const user = JSON.parse(loggedUser)
     dispatch(setloggedUser(user))
-  }
-}
-
-export const getProfileUser = (userId) => async (dispatch) => {
-  try {
-    const user = await userService.getUserById(userId)
-    dispatch(setProfileUser(user))
-  } catch (error) {
-    console.error('Error fetching profile:', error)
   }
 }
 
