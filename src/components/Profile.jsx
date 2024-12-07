@@ -6,6 +6,7 @@ import { initializePublications, likePublication } from '../reducers/publication
 const Profile = ({ userProfile, publications }) => {
   console.log("perfil del usuario", userProfile)
   const dispatch = useDispatch()
+  
   const profileToken = userProfile.token 
 
   useEffect(() => {

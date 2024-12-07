@@ -3,6 +3,12 @@
   padding: 1rem;
 }
 
+.spinner{
+  width: 5rem; 
+  height: 5rem;
+  border-width: 0.5rem;
+}
+
 .error {
   color: red;
   background: lightgrey;

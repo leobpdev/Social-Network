@@ -7,11 +7,9 @@ import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
 import Profile from './components/Profile'
 
-import { initializePublications } from './reducers/publicationReducer'
-import { initializeUsers, initializeLoggerdUser, logout } from './reducers/userReducer'
+import { initializeLoggerdUser, logout } from './reducers/userReducer'
 
 import publicationService from './services/publications'
-import userService from './services/users'
 
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
@@ -31,24 +29,10 @@ const App = () => {
       if (user.token) {
         dispatch(initializeLoggerdUser(user))
         publicationService.setToken(user.token)
-        userService.setToken(user.token)
       }
     }
     setLoading(false) // Terminamos la carga inicial
   }, [dispatch])
-
-  // Hook que inicializa datos cuando `loggedUser` cambia
-  useEffect(() => {
-    if (loggedUser) {
-      const initializeData = async () => {
-        setLoading(true)
-        await dispatch(initializeUsers())
-        await dispatch(initializePublications())
-        setLoading(false)
-      }
-      initializeData()
-    }
-  }, [loggedUser, dispatch])
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedUser')
@@ -65,7 +49,11 @@ const App = () => {
       ) : (
         <>
           {loading ? (
-            <div>Loading...</div>
+            <div class="d-flex justify-content-center align-items-center min-vh-100">
+              <div class="spinner spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
           ) : (
             <>
               <div className="d-flex col-12">
