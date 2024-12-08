@@ -8,12 +8,12 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
-const getAllPublications = async (profileToken) => {
+const getAllPublications = async (username) => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const url = profileToken ? `${baseUrl}/${profileToken}` : baseUrl
+  const url = username ? `${baseUrl}/${username}` : baseUrl
 
   const response = await axios.get(url, config)
   return response.data

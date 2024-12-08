@@ -26,7 +26,7 @@ const PublicationList = ({ publications }) => {
 
   return (
     <div className="container col-md-4 mt-4">
-      
+
       {loading ? (
         // Mostrar spinner mientras se cargan los datos
         <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -39,18 +39,20 @@ const PublicationList = ({ publications }) => {
         <div className="row">
           {publications.map((publication) => {
             const { user, hasLiked } = publication
-
+            console.log(user)
             return (
               <div className="col-md-12 mb-4" key={publication.id}>
                 <div className="d-flex align-items-center mb-2">
-                  <img
-                    src={user?.imageUrl || ""}
-                    alt="Foto de perfil"
-                    className="rounded-circle me-2"
-                    style={{ width: '40px', height: '40px', objectFit: 'cover' }}
-                  />
+                  <a href={`/profile/${user.username}`} >
+                    <img
+                      src={user.imageUrl}
+                      alt="Foto de perfil"
+                      className="rounded-circle me-2"
+                      style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+                    />
+                  </a>
                   <p className="mb-0">
-                    <strong>{user?.name || 'Usuario desconocido'}</strong>
+                    <strong>{user.name}</strong>
                   </p>
                 </div>
                 <div className="card">

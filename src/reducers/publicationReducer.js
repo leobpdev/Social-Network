@@ -22,9 +22,9 @@ const publicationSlice = createSlice({
 export const { setPublications, addPublication, updatePublication } = publicationSlice.actions
 
 // funciones son "thunks", que representan acciones asincrónicas o acciones que requieren lógica adicional antes de actualizar el estado
-export const initializePublications = (profileToken) => async (dispatch) => {
+export const initializePublications = (username) => async (dispatch) => {
   try {
-    const publications = await publicationService.getAllPublications(profileToken)
+    const publications = await publicationService.getAllPublications(username)
     dispatch(setPublications(publications))
   } catch (error) {
     console.error("Error initializing posts:", error)

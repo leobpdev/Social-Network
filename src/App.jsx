@@ -7,14 +7,14 @@ import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
 import Profile from './components/Profile'
 
-import { initializeLoggerdUser, logout } from './reducers/userReducer'
-
+import { initializeLoggedUser, logout } from './reducers/userReducer'
 import publicationService from './services/publications'
 
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
   const loggedUser = useSelector((state) => state.user.loggedUser)
   const publications = useSelector((state) => state.publications)
+  const userProfile = useSelector((state) => state.user.userProfile)
 
   // useDispatch es un hook que proporciona acceso al método `dispatch` del store. Este método se utiliza para enviar acciones al store y actualizar el estado global.
   const dispatch = useDispatch()
@@ -27,7 +27,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       if (user.token) {
-        dispatch(initializeLoggerdUser(user))
+        dispatch(initializeLoggedUser(user))
         publicationService.setToken(user.token)
       }
     }
@@ -89,7 +89,7 @@ const App = () => {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link to="/profile" className={`nav-link ${location.pathname.startsWith('/profile') ? 'active' : ''}`}>
+                      <Link to={`/profile/${loggedUser?.username}`} className={`nav-link ${location.pathname.startsWith('/profile') ? 'active' : ''}`}>
                         <i className="bi bi-person-circle me-2"></i> Profile
                       </Link>
                     </li>
@@ -105,7 +105,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
                   <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
-                  <Route path="/profile" element={<Profile userProfile={loggedUser} publications={publications} />} />
+                  <Route path="/profile/:username" element={<Profile userProfile={userProfile} publications={publications} />} />
                 </Routes>
 
               </div>
