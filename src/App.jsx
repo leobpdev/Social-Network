@@ -8,7 +8,9 @@ import LoginForm from './components/LoginForm'
 import Profile from './components/Profile'
 
 import { initializeLoggedUser, logout } from './reducers/userReducer'
+
 import publicationService from './services/publications'
+import userService from './services/users'
 
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
@@ -29,6 +31,7 @@ const App = () => {
       if (user.token) {
         dispatch(initializeLoggedUser(user))
         publicationService.setToken(user.token)
+        userService.setToken(user.token)
       }
     }
     setLoading(false) // Terminamos la carga inicial
@@ -89,7 +92,7 @@ const App = () => {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link to={`/profile/${loggedUser?.username}`} className={`nav-link ${location.pathname.startsWith('/profile') ? 'active' : ''}`}>
+                      <Link to={`/profile/${loggedUser?.username}`} className={`nav-link ${location.pathname.startsWith('/profile') && loggedUser?.username === userProfile?.username ? 'active' : ''}`}>
                         <i className="bi bi-person-circle me-2"></i> Profile
                       </Link>
                     </li>
@@ -105,7 +108,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
                   <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
-                  <Route path="/profile/:username" element={<Profile userProfile={userProfile} publications={publications} />} />
+                  <Route path="/profile/:username" element={<Profile userProfile={userProfile} publications={publications} loggedUser={loggedUser}/>} />
                 </Routes>
 
               </div>

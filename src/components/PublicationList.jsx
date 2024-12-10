@@ -39,7 +39,7 @@ const PublicationList = ({ publications }) => {
         <div className="row">
           {publications.map((publication) => {
             const { user, hasLiked } = publication
-            console.log(user)
+            
             return (
               <div className="col-md-12 mb-4" key={publication.id}>
                 <div className="d-flex align-items-center mb-2">

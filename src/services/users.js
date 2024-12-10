@@ -14,8 +14,23 @@ const getAllUsers = async () => {
 }
 
 const getUser = async (username) => {
-  const response = await axios.get(`${baseUrl}/${username}`)
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.get(`${baseUrl}/${username}`, config)
   return response.data
 }
 
-export default { getAllUsers, getUser, setToken }
+const updateUser = async (username, newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  try {
+    const response = await axios.put(`${baseUrl}/${username}`, newObject, config)
+    return response.data
+  } catch (error) {
+    console.error('Error updating user:', error);
+  }
+}
+
+export default { getAllUsers, getUser, updateUser, setToken }

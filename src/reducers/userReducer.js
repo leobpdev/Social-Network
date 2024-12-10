@@ -27,7 +27,7 @@ const userSlice = createSlice({
   },
 })
 
-export const { setloggedUser, clearloggedUser, setUsers, setUserProfile } = userSlice.actions
+export const { setloggedUser, clearloggedUser, setUsers, setUserProfile, updateUser } = userSlice.actions
 
 // funciones son "thunks", que representan acciones asincrónicas o acciones que requieren lógica adicional antes de actualizar el estado
 export const initializeUsers = () => async (dispatch) => {
@@ -53,6 +53,15 @@ export const initializeLoggedUser = () => (dispatch) => {
   if (loggedUser) {
     const user = JSON.parse(loggedUser)
     dispatch(setloggedUser(user))
+  }
+}
+
+export const followUser = ({ username }) => async (dispatch) => {
+  try {
+    const updatedUser = await userService.updateUser(username)
+    dispatch(setUserProfile(updatedUser))
+  } catch (error) {
+    console.error('Error creating post:', error)
   }
 }
 

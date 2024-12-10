@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { initializeUserProfile } from '../reducers/userReducer'
+import { initializeUserProfile, followUser, } from '../reducers/userReducer'
 import { initializePublications, likePublication } from '../reducers/publicationReducer'
 
-const Profile = ({ userProfile, publications }) => {
+const Profile = ({ userProfile, publications, loggedUser }) => {
   const dispatch = useDispatch()
   const { username } = useParams()
   const [loading, setLoading] = useState(true)
@@ -12,18 +12,22 @@ const Profile = ({ userProfile, publications }) => {
   useEffect(() => {
     if (username) {
       const initializeData = async () => {
-        setLoading(true) 
+        setLoading(true)
         try {
           await dispatch(initializeUserProfile(username))
           await dispatch(initializePublications(username))
         } catch (error) {
         } finally {
-          setLoading(false) 
+          setLoading(false)
         }
       }
-      initializeData() 
+      initializeData()
     }
-  }, [dispatch, username]) 
+  }, [dispatch, username])
+
+  const handleFollow = (username) => {
+    dispatch(followUser({ username }))
+  }
 
   const handleLike = (publication) => {
     dispatch(likePublication({ publication }))
@@ -49,26 +53,36 @@ const Profile = ({ userProfile, publications }) => {
               style={{ width: '100px', height: '100px', objectFit: 'cover' }}
             />
             <div>
-              <h1 className="h4 mb-2">{userProfile.username}</h1>
+              <h1 className="h4 mb-2">{userProfile.username}
+                {loggedUser.username !== userProfile.username && (
+                  <button
+                    type="submit"
+                    className={`btn ${userProfile.isFollowing ? 'btn-outline-primary' : 'btn-primary'} ms-3`}
+                    onClick={() => handleFollow(username)}
+                  >
+                    {userProfile.isFollowing ? 'Unfollow' : 'Follow'}
+                  </button>
+                )}
+              </h1>
               <p className="text-muted m-0">{userProfile.name}</p>
               <div className="d-flex mb-2">
                 <span className="me-3">
-                  <strong>{userProfile.followers.length}</strong> followers
+                  <strong>{userProfile.followers ? userProfile.followers.length : 0}</strong> followers
                 </span>
                 <span className="me-3">
-                  <strong>{userProfile.following.length}</strong> following
+                  <strong>{userProfile.following ? userProfile.following.length : 0}</strong> following
                 </span>
               </div>
             </div>
           </div>
-  
+
           <hr />
-  
+
           <div className="container col-md-4 mt-4">
             <div className="row">
               {publications.map((publication) => {
-                const { user, hasLiked } = publication
-  
+                const { hasLiked } = publication
+
                 return (
                   <div className="col-md-12 mb-4" key={publication.id}>
                     <div className="card">
