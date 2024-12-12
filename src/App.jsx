@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
 import PublicationList from './components/PublicationList'
+import Search from './components/Search'
 import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
 import Profile from './components/Profile'
@@ -16,6 +17,7 @@ const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
   const loggedUser = useSelector((state) => state.user.loggedUser)
   const publications = useSelector((state) => state.publications)
+  const users = useSelector((state) => state.user.users)
   const userProfile = useSelector((state) => state.user.userProfile)
 
   // useDispatch es un hook que proporciona acceso al método `dispatch` del store. Este método se utiliza para enviar acciones al store y actualizar el estado global.
@@ -107,6 +109,7 @@ const App = () => {
 
                 <Routes>
                   <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
+                  <Route path="/search" element={<Search users={users} />} />
                   <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
                   <Route path="/profile/:username" element={<Profile userProfile={userProfile} publications={publications} loggedUser={loggedUser}/>} />
                 </Routes>

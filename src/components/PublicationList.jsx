@@ -28,7 +28,6 @@ const PublicationList = ({ publications }) => {
     <div className="container col-md-4 mt-4">
 
       {loading ? (
-        // Mostrar spinner mientras se cargan los datos
         <div className="d-flex justify-content-center align-items-center min-vh-100">
           <div className="spinner spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
