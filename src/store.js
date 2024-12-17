@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import publicationReducer from './reducers/publicationReducer'
 import userReducer from './reducers/userReducer'
-//import notificationReducer from './reducers/notificationReducer'
+import messagesReducer from './reducers/messageReducer'
 
 export default configureStore({
   reducer: {
     publications: publicationReducer,
     user: userReducer,
-    //notification: notificationReducer,
+    messages: messagesReducer,
   },
 })

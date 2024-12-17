@@ -38,22 +38,26 @@ const PublicationList = ({ publications }) => {
         <div className="row">
           {publications.map((publication) => {
             const { user, hasLiked } = publication
-            
+
             return (
               <div className="col-md-12 mb-4" key={publication.id}>
                 <div className="d-flex align-items-center mb-2">
-                  <a href={`/profile/${user.username}`} >
+                  <a
+                    href={`/profile/${user.username}`}
+                    className="text-decoration-none d-flex align-items-center"
+                  >
                     <img
                       src={user.imageUrl}
                       alt="Foto de perfil"
                       className="rounded-circle me-2"
                       style={{ width: '40px', height: '40px', objectFit: 'cover' }}
                     />
+                    <p className="mb-0">
+                      <strong className="text-dark">{user.name}</strong>
+                    </p>
                   </a>
-                  <p className="mb-0">
-                    <strong>{user.name}</strong>
-                  </p>
                 </div>
+
                 <div className="card">
                   {publication.imageUrl && (
                     <img

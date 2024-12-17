@@ -4,6 +4,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
 import PublicationList from './components/PublicationList'
 import Search from './components/Search'
+import Messages from './components/Messages'
 import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
 import Profile from './components/Profile'
@@ -19,6 +20,7 @@ const App = () => {
   const publications = useSelector((state) => state.publications)
   const users = useSelector((state) => state.user.users)
   const userProfile = useSelector((state) => state.user.userProfile)
+  const messages = useSelector((state) => state.messages)
 
   // useDispatch es un hook que proporciona acceso al método `dispatch` del store. Este método se utiliza para enviar acciones al store y actualizar el estado global.
   const dispatch = useDispatch()
@@ -110,6 +112,8 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<PublicationList publications={publications} loggedUser={loggedUser} />} />
                   <Route path="/search" element={<Search users={users} />} />
+                  <Route path="/messages" element={<Messages users={users} messages={messages} loggedUser={loggedUser} />} />
+                  <Route path="/messages/:username" element={<Messages users={users} messages={messages} loggedUser={loggedUser} />} />
                   <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
                   <Route path="/profile/:username" element={<Profile userProfile={userProfile} publications={publications} loggedUser={loggedUser}/>} />
                 </Routes>

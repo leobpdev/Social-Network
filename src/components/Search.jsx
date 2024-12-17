@@ -43,24 +43,30 @@ const Search = ({ users }) => {
                         />
                     </div>
                     {filteredUsers.length > 0 && (
-                    filteredUsers.map((user) => (
-                        <div key={user.username} className="d-flex align-items-center mb-3">
-                            <a href={`/profile/${user.username}`} >
-                                <img
-                                    src={user.imageUrl}
-                                    alt="Profile"
-                                    className="rounded-circle me-4"
-                                    style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-                                />
-                            </a>
-                            <div className="mt-2">
-                                <p><strong>{user.username}</strong></p>
-                                <p>{user.name}</p>
+                        filteredUsers.map((user) => (
+                            <div key={user.username} className="d-flex align-items-center mb-3">
+                                <a
+                                    href={`/profile/${user.username}`}
+                                    className="text-decoration-none d-flex align-items-center"
+                                >
+                                    <img
+                                        src={user.imageUrl}
+                                        alt="Profile"
+                                        className="rounded-circle me-4"
+                                        style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                                    />
+                                    <div className="mt-3">
+                                        <p className="text-dark">
+                                            <strong>{user.username}</strong>
+                                            <br />
+                                            {user.name}
+                                        </p>
+                                    </div>
+                                </a>
+                                <hr />
                             </div>
-                            <hr />
-                        </div>
-                    ))
-                )}
+                        ))
+                    )}
                 </div>
             )}
         </div>
