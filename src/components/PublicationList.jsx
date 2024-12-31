@@ -48,7 +48,7 @@ const PublicationList = ({ publications }) => {
                   >
                     <img
                       src={user.imageUrl}
-                      alt="Foto de perfil"
+                      alt=""
                       className="rounded-circle me-2"
                       style={{ width: '40px', height: '40px', objectFit: 'cover' }}
                     />
@@ -63,22 +63,31 @@ const PublicationList = ({ publications }) => {
                     <img
                       src={publication.imageUrl}
                       className="card-img-top"
-                      alt="Nota"
+                      alt=""
                     />
                   )}
                   <div className="card-body">
                     <p className="card-text">{publication.content}</p>
+
                     <div className="d-flex justify-content-between align-items-center">
-                      <button
-                        className={`btn ${hasLiked ? 'text-danger' : 'text-muted'}`}
-                        onClick={() => handleLike(publication)}
-                      >
-                        <i className={`bi ${hasLiked ? 'bi-heart-fill' : 'bi-heart'}`}></i>
-                      </button>
+                      <div className="d-flex align-items-center">
+                        <button
+                          className={`btn ${hasLiked ? 'text-danger' : 'text-muted'}`}
+                          onClick={() => handleLike(publication)}
+                        >
+                          <i className={`bi ${hasLiked ? 'bi-heart-fill' : 'bi-heart'}`}></i>
+                        </button>
+
+                        <a href={`/comments/${publication.id}`} className="ms-2" style={{ color: 'var(--bs-secondary-color)', fontWeight: 'normal' }}>
+                          <i className="bi bi-chat"></i>
+                        </a>
+                      </div>
+
                       <span className="text-muted">
                         {publication.likes.length} {publication.likes.length === 1 ? 'like' : 'likes'}
                       </span>
                     </div>
+
                   </div>
                 </div>
               </div>

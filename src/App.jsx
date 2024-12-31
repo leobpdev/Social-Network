@@ -5,6 +5,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import PublicationList from './components/PublicationList'
 import Search from './components/Search'
 import Messages from './components/Messages'
+import Comments from './components/Comments'
 import PublicationForm from './components/PublicationForm'
 import LoginForm from './components/LoginForm'
 import Profile from './components/Profile'
@@ -13,6 +14,8 @@ import { initializeLoggedUser, logout } from './reducers/userReducer'
 
 import publicationService from './services/publications'
 import userService from './services/users'
+import messageService from './services/messages'
+import commentService from './services/comments'
 
 const App = () => {
   // useSelector permite seleccionar partes específicas del estado global almacenado en el store de Redux.
@@ -21,6 +24,7 @@ const App = () => {
   const users = useSelector((state) => state.user.users)
   const userProfile = useSelector((state) => state.user.userProfile)
   const messages = useSelector((state) => state.messages)
+  const comments = useSelector((state) => state.comments)
 
   // useDispatch es un hook que proporciona acceso al método `dispatch` del store. Este método se utiliza para enviar acciones al store y actualizar el estado global.
   const dispatch = useDispatch()
@@ -36,6 +40,8 @@ const App = () => {
         dispatch(initializeLoggedUser(user))
         publicationService.setToken(user.token)
         userService.setToken(user.token)
+        messageService.setToken(user.token)
+        commentService.setToken(user.token)
       }
     }
     setLoading(false) // Terminamos la carga inicial
@@ -116,6 +122,7 @@ const App = () => {
                   <Route path="/messages/:username" element={<Messages users={users} messages={messages} loggedUser={loggedUser} />} />
                   <Route path="/create" element={<PublicationForm loggedUser={loggedUser} />} />
                   <Route path="/profile/:username" element={<Profile userProfile={userProfile} publications={publications} loggedUser={loggedUser}/>} />
+                  <Route path="/comments/:id" element={<Comments users={users} comments={comments} publications={publications} loggedUser={loggedUser} />} />
                 </Routes>
 
               </div>

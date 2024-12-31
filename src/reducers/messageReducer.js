@@ -14,7 +14,7 @@ const messageSlice = createSlice({
   },
 })
 
-export const { setMessages, addMessage, updateMessage } = messageSlice.actions
+export const { setMessages, addMessage } = messageSlice.actions
 
 export const initializeMessages = (username) => async (dispatch) => {
   try {
@@ -25,9 +25,9 @@ export const initializeMessages = (username) => async (dispatch) => {
   }
 }
 
-export const createMessage = (message) => async (dispatch) => {
+export const createMessage = (username, message) => async (dispatch) => {
   try {
-    const newMessage = await messageService.createMessage(message)
+    const newMessage = await messageService.createMessage(username, message)
     dispatch(addMessage(newMessage))
   } catch (error) {
     console.error('Error sending message:', error)

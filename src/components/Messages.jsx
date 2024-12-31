@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import { initializeUsers } from '../reducers/userReducer'
-import { initializeMessages } from '../reducers/messageReducer'
+import { initializeMessages, createMessage } from '../reducers/messageReducer'
 
 const Messages = ({ users, messages, loggedUser }) => {
     const dispatch = useDispatch()
     const { username } = useParams() // Capturamos el parámetro de la URL
     const [loading, setLoading] = useState(true)
-    const [newMessage, setNewMessage] = useState('') // Estado para el nuevo mensaje
+    const [newMessage, setNewMessage] = useState('')
 
     useEffect(() => {
         const initializeData = async () => {
@@ -69,10 +69,18 @@ const Messages = ({ users, messages, loggedUser }) => {
             )
         })
 
-        const handleSendMessage = (e) => {
+        const handleSendMessage = async (e) => {
             e.preventDefault()
             if (newMessage.trim()) {
-                setNewMessage('')
+                try {
+                    const messageToSend = {
+                        content: newMessage
+                    }
+                    await dispatch(createMessage(username, messageToSend))
+                    setNewMessage('')
+                } catch (error) {
+                    console.error('Error sending message:', error)
+                }
             }
         }
 
@@ -134,7 +142,7 @@ const Messages = ({ users, messages, loggedUser }) => {
     }
 
     return (
-        <div className="container col-4 m-5">
+        <div className="container m-5">
             <h3>Chats</h3>
             {chatList.map(({ user, lastMessage }) => (
                 <div key={user.id} className="mb-3">

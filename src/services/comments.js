@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = '/api/messages'
+const baseUrl = '/api/comments'
 
 let token = null
 
@@ -8,7 +8,7 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
-const getAllMessages = async (id) => {
+const getAllComments = async (id) => {
   const config = {
     headers: { Authorization: token },
   }
@@ -19,7 +19,7 @@ const getAllMessages = async (id) => {
   return response.data
 }
 
-const createMessage = async (id, newObject) => {
+const createComment = async (id, newObject) => {
   const config = {
     headers: { Authorization: token },
   }
@@ -27,4 +27,4 @@ const createMessage = async (id, newObject) => {
   return response.data
 }
 
-export default { getAllMessages, createMessage, setToken }
+export default { getAllComments, createComment, setToken }
